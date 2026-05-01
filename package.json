@@ -8,13 +8,5 @@
   ],
   "scripts": {
     "install:all": "npm install"
-  },
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  }
 }

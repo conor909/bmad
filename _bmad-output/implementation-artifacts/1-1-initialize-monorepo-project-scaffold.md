@@ -1,6 +1,6 @@
 # Story 1.1: Initialize Monorepo & Project Scaffold
 
-Status: review
+Status: done
 
 ## Story
 
@@ -55,6 +55,19 @@ so that all subsequent stories have a consistent, working foundation to build on
   - [x] Confirm `frontend/`, `backend/`, `backend/prisma/schema.prisma`, `.env.example`, `.gitignore` all exist
   - [x] Run `npm run dev` in `frontend/` — Vite starts on :5173
   - [x] Run `npm run dev` in `backend/` — ts-node-dev starts without errors
+
+### Review Findings (AI)
+
+**Date:** 2026-05-01 | **Layers:** Blind Hunter, Acceptance Auditor (Edge Case Hunter: failed — usage limit)
+
+- [x] [Review][Patch] `schema.prisma` datasource block missing `url` field — Prisma CLI and `prisma migrate dev` (Story 1.2) will fail without it [`backend/prisma/schema.prisma`]
+- [x] [Review][Patch] `@prisma/client` missing from `backend/package.json` dependencies — runtime query client absent, any Prisma import will fail in production [`backend/package.json`]
+- [x] [Review][Patch] `dotenv` not loaded in entry point — `import 'dotenv/config'` missing as first import in `index.ts`; `process.env.PORT` and future `DATABASE_URL` reads rely on external env population [`backend/src/index.ts`]
+- [x] [Review][Patch] `prisma` CLI pinned to exact `7.6` with no patch range — security/bug-fix patches (`7.6.x`) will not be picked up by `npm update` [`backend/package.json`]
+- [x] [Review][Patch] Root `package.json` has stale `npm init -y` artifact fields (`main`, `directories`, `keywords`, `author`, `license`, `description`) that are meaningless for a private monorepo root [`package.json`]
+- [x] [Review][Defer] `prisma.config.ts` `DATABASE_URL` passed as `string | undefined` with no guard [`backend/prisma.config.ts`] — deferred, Story 1.4 owns env config
+- [x] [Review][Defer] `helmet` and `cors` listed as dependencies but not applied in `app.ts` [`backend/src/app.ts`] — deferred, Story 1.3 adds middleware and routes
+- [x] [Review][Defer] `CORS_ORIGIN` env var defined in `.env.example` but not consumed anywhere [`.env.example`] — deferred, Story 1.3 concern
 
 ## Dev Notes
 
